@@ -1396,14 +1396,67 @@
   },
   {
     "name": "Autotask PSA",
-    "id": "AutotaskPSA",
-    "type": "AutotaskPSA",
+    "id": "Autotask",
+    "type": "Autotask",
     "cat": "Ticketing",
-    "logo": "/assets/integrations/autotask.png",
-    "logoNeedsLightBacking": true,
-    "comingSoon": true,
+    "logo": "/assets/integrations/autotask_light.png",
+    "logoDark": "/assets/integrations/autotask_dark.png",
+    "forceSyncButton": false,
     "description": "Enable the Autotask PSA integration to send alerts to your ticketing system.",
-    "mappingRequired": false
+    "helpText": "Fulcra custom integration. Raises an Autotask ticket for every alert configured to deliver to a PSA, against the Autotask company each tenant is mapped to. Unmapped tenants are ticketed against the base company (0). Tickets go to the Level I Support queue as Service Management / Other.",
+    "links": [
+      {
+        "name": "Autotask REST API Documentation",
+        "url": "https://www.autotask.net/help/developerhelp/Content/APIs/REST/REST_API_Home.htm"
+      }
+    ],
+    "SettingOptions": [
+      {
+        "type": "switch",
+        "name": "Autotask.Enabled",
+        "label": "Enable Integration"
+      },
+      {
+        "type": "textField",
+        "name": "Autotask.APIUser",
+        "label": "API User",
+        "placeholder": "API user name (email address) of the Autotask API-only user",
+        "required": true,
+        "condition": {
+          "field": "Autotask.Enabled",
+          "compareType": "is",
+          "compareValue": true,
+          "action": "disable"
+        }
+      },
+      {
+        "type": "textField",
+        "name": "Autotask.APIIntegrationCode",
+        "label": "API Integration Code",
+        "placeholder": "Tracking identifier of the API user",
+        "required": true,
+        "condition": {
+          "field": "Autotask.Enabled",
+          "compareType": "is",
+          "compareValue": true,
+          "action": "disable"
+        }
+      },
+      {
+        "type": "password",
+        "name": "Autotask.APIKey",
+        "label": "API User Secret",
+        "placeholder": "Enter the API user's secret. Leave blank to keep your current key.",
+        "required": true,
+        "condition": {
+          "field": "Autotask.Enabled",
+          "compareType": "is",
+          "compareValue": true,
+          "action": "disable"
+        }
+      }
+    ],
+    "mappingRequired": true
   },
   {
     "name": "Kaseya BMS",

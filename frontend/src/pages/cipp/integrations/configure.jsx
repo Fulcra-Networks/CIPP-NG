@@ -96,6 +96,7 @@ const Page = () => {
   const testTicketEndpoints = {
     HaloPSA: "/api/ExecHaloPSATestTicket",
     Syncro: "/api/ExecSyncroTestTicket",
+    Autotask: "/api/ExecAutotaskTestTicket",
   };
   const [testTicketQuery, setTestTicketQuery] = useState({ url: "", waiting: false, queryKey: "" });
   const actionTestTicketResults = ApiGetCall({

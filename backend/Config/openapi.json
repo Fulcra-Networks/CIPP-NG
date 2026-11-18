@@ -16111,6 +16111,60 @@
         "x-cipp-any-tenant": true
       }
     },
+    "/api/ExecAutotaskTestTicket": {
+      "post": {
+        "summary": "Create an Autotask test ticket so admins can check the integration works without waiting\nfor a real alert to fire. Covers auth, the HTML-to-text body conversion and the\nhard-coded queue, billing code and issue type. Always tickets the base company (0).\n\nFulcra custom extension (migration plan 01). Calls New-AutotaskTicket directly rather\nthan going through Send-CIPPAlert, so the [CIPP] title prefix is not exercised here.",
+        "operationId": "ExecAutotaskTestTicket",
+        "tags": [
+          "CIPP > Extensions"
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Derived from the fields the endpoint selects onto each record. The response may carry more; these are the ones known to exist.",
+                  "properties": {
+                    "Results": {
+                      "x-cipp-field-source": "backend"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing bearer token"
+          },
+          "403": {
+            "description": "Forbidden - caller lacks the required RBAC role"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-cipp-role": "CIPP.Extension.ReadWrite",
+        "x-cipp-any-tenant": true
+      }
+    },
     "/api/ExecAzBobbyTables": {
       "post": {
         "summary": "Execute a AzBobbyTables function",
@@ -24380,6 +24434,7 @@
             "schema": {
               "type": "string",
               "enum": [
+                "Autotask",
                 "HaloPSA",
                 "Hudu",
                 "HuduFields",
@@ -24412,6 +24467,7 @@
             "schema": {
               "type": "string",
               "enum": [
+                "Autotask",
                 "HaloPSA",
                 "HaloPSAFields",
                 "HaloPSARequestSources",
@@ -24749,7 +24805,7 @@
         "tags": [
           "CIPP > Extensions"
         ],
-        "description": "Tests the stored credentials for a configured third-party integration and reports whether CIPP can connect. extensionName selects which one: HaloPSA, Syncro, Gradient, NinjaOne, PWPush, Hudu, Sherweb, HIBP or GitHub.",
+        "description": "Tests the stored credentials for a configured third-party integration and reports whether CIPP can connect. extensionName selects which one: HaloPSA, Syncro, Autotask, Gradient, NinjaOne, PWPush, Hudu, Sherweb, HIBP or GitHub.",
         "parameters": [
           {
             "name": "extensionName",
@@ -24758,6 +24814,7 @@
             "schema": {
               "type": "string",
               "enum": [
+                "Autotask",
                 "CIPP-API",
                 "GitHub",
                 "Gradient",

@@ -37,6 +37,9 @@ Function Invoke-ExecExtensionMapping {
       'Syncro' {
         $Result = Get-SyncroMapping -CIPPMapping $Table
       }
+      'Autotask' {
+        $Result = Get-AutotaskMapping -CIPPMapping $Table
+      }
       'HaloPSAFields' {
         # Outcomes and priorities are scoped to a ticket type. The settings page sends the
         # ticket type currently selected in the form so the lists follow the dropdown; without
@@ -98,6 +101,9 @@ Function Invoke-ExecExtensionMapping {
         }
         'Syncro' {
           $Result = Set-SyncroMapping -CIPPMapping $Table -APIName $APIName -Request $Request
+        }
+        'Autotask' {
+          $Result = Set-AutotaskMapping -CIPPMapping $Table -APIName $APIName -Request $Request
         }
         'NinjaOne' {
           $Result = Set-NinjaOneOrgMapping -CIPPMapping $Table -APIName $APIName -Request $Request

@@ -144,6 +144,29 @@ function New-CippExtAlert {
                     }
                 }
             }
+            'Autotask' {
+                # Fulcra custom extension (migration plan 01). One new ticket per alert. The
+                # ticket reference and consolidation fields on the alert are HaloPSA features and
+                # are not read here (D-026).
+                if ($Configuration.Autotask.Enabled) {
+                    $TenantId = (Get-Tenants -TenantFilter $Alert.TenantId).customerId
+                    $MappedId = (Get-ExtensionMapping -Extension 'Autotask' | Where-Object { $_.RowKey -eq $TenantId }).IntegrationId
+                    if (-not $MappedId) {
+                        # Unmapped tenants land on the Fulcra base company (0) so no alert is lost (D-025).
+                        $MappedId = 0
+                        Write-LogMessage -API 'AutotaskTicket' -tenant $Alert.TenantId -message "No Autotask company mapping for tenant $($Alert.TenantId) - the ticket was raised against Autotask company 0. Map the tenant under Settings > Integrations > Autotask." -sev Warning
+                    }
+                    # Autotask priorities: 1 High, 2 Normal, 4 Critical. Anything else (a HaloPSA or
+                    # Syncro value when several PSAs are on) falls back to Normal.
+                    $RawPriority = "$($Alert.PsaTicketPriority.value ?? $Alert.PsaTicketPriority)".Trim()
+                    $Priority = switch -Regex ($RawPriority) {
+                        '^(1|high)$' { '1' }
+                        '^(4|critical)$' { '4' }
+                        default { '2' }
+                    }
+                    New-AutotaskTicket -atCompanyId $MappedId -title $Alert.AlertTitle -description $Alert.AlertText -issueType 29 -subIssueType 327 -priority $Priority -Configuration $Configuration.Autotask
+                }
+            }
             'NinjaOne' {
                 if ($Configuration.NinjaOne.Enabled -and $Configuration.NinjaOne.TicketingEnabled) {
                     $TenantId = (Get-Tenants -TenantFilter $Alert.TenantId).customerId
