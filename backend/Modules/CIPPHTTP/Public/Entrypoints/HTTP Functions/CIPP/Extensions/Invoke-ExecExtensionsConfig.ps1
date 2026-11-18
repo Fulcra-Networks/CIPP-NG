@@ -117,7 +117,7 @@ function Invoke-ExecExtensionsConfig {
         }
 
         # The property name becomes the stored secret's name, so only the extensions the settings form posts may store one.
-        $KnownExtensions = @('AutotaskPSA', 'CFZTNA', 'cippapi', 'ConnectWisePSA', 'GitHub', 'Gradient', 'HaloPSA', 'HIBP', 'Hudu', 'KaseyaBMS', 'NinjaOne', 'Pax8', 'PWPush', 'Sherweb', 'Syncro')
+        $KnownExtensions = @('Autotask', 'AutotaskPSA', 'CFZTNA', 'cippapi', 'ConnectWisePSA', 'GitHub', 'Gradient', 'HaloPSA', 'HIBP', 'Hudu', 'KaseyaBMS', 'NinjaOne', 'Pax8', 'PWPush', 'Sherweb', 'Syncro')
         foreach ($APIKey in $Body.PSObject.Properties.Name) {
             Write-Information "Working on $APIKey"
             if ($APIKey -notin $KnownExtensions) {
@@ -177,6 +177,7 @@ function Invoke-ExecExtensionsConfig {
         $TicketingOn = [System.Collections.Generic.List[string]]::new()
         if ($HaloSettings.Enabled -eq $true) { $TicketingOn.Add('HaloPSA') }
         if ($Body.Syncro.Enabled -eq $true) { $TicketingOn.Add('Syncro') }
+        if ($Body.Autotask.Enabled -eq $true) { $TicketingOn.Add('Autotask') }
         if ($NinjaOneSettings.Enabled -eq $true -and $NinjaOneSettings.TicketingEnabled -eq $true) { $TicketingOn.Add('NinjaOne') }
         if ($TicketingOn.Count -gt 1) {
             $AddedText = "$AddedText Warning: $($TicketingOn -join ' and ') ticketing are all enabled, so every alert will raise a ticket in each. Keep one enabled."

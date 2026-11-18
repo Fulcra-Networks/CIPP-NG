@@ -197,6 +197,8 @@ ENV BUILD_DATE=$BUILD_DATE
 COPY backend/Modules/AzBobbyTables  /app/API/Modules/AzBobbyTables/
 COPY backend/Modules/DNSHealth      /app/API/Modules/DNSHealth/
 COPY backend/Modules/HuduAPI        /app/API/Modules/HuduAPI/
+# Fulcra: vendored AutotaskAPI 1.2.2 (migration plan 01)
+COPY backend/Modules/AutotaskAPI    /app/API/Modules/AutotaskAPI/
 
 # Backend support directories
 # --chown: the app user owns Config/ so CRAFT can write Config/function-permissions.json
