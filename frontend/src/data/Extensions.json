@@ -1459,6 +1459,57 @@
     "mappingRequired": true
   },
   {
+    "name": "IronScales",
+    "id": "IronScales",
+    "type": "IronScales",
+    "cat": "Email Security",
+    "logo": "/assets/integrations/ironscales_light.png",
+    "logoDark": "/assets/integrations/ironscales_dark.png",
+    "forceSyncButton": true,
+    "description": "Enable the IronScales integration to raise Autotask tickets for unclassified phishing incidents.",
+    "helpText": "Fulcra custom integration. Requires the Autotask PSA integration. Every 30 minutes on weekdays, CIPP lists each IronScales company's unclassified incidents from the last 7 days and raises one High priority Autotask ticket (Service Management / Email Security) per company, against the Autotask company its tenant is mapped to. No new ticket is raised while one is still open for that company. Map IronScales companies to tenants on the Tenant Mapping tab.",
+    "links": [
+      {
+        "name": "IronScales API Documentation",
+        "url": "https://appapi.ironscales.com/appapi/docs/"
+      }
+    ],
+    "SettingOptions": [
+      {
+        "type": "switch",
+        "name": "IronScales.Enabled",
+        "label": "Enable Integration"
+      },
+      {
+        "type": "textField",
+        "name": "IronScales.ApiHost",
+        "label": "IronScales API base URL",
+        "placeholder": "https://appapi.ironscales.com/appapi",
+        "required": true,
+        "condition": {
+          "field": "IronScales.Enabled",
+          "compareType": "is",
+          "compareValue": true,
+          "action": "disable"
+        }
+      },
+      {
+        "type": "password",
+        "name": "IronScales.APIKey",
+        "label": "IronScales Partner API Key",
+        "placeholder": "Enter your IronScales partner API key. Leave blank to keep your current key.",
+        "required": true,
+        "condition": {
+          "field": "IronScales.Enabled",
+          "compareType": "is",
+          "compareValue": true,
+          "action": "disable"
+        }
+      }
+    ],
+    "mappingRequired": true
+  },
+  {
     "name": "Kaseya BMS",
     "id": "KaseyaBMS",
     "type": "KaseyaBMS",

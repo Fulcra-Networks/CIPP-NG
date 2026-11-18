@@ -44,6 +44,7 @@ function Invoke-ExecExtensionsConfig {
         # at a new address or newly sent to one, so either change needs a new key in the same save.
         $SecretRoutes = @(
             @{ Name = 'HaloPSA'; Fields = @('AuthURL', 'ResourceURL'); Url = $true; Secrets = { param($c) 'HaloPSA' } }
+            @{ Name = 'IronScales'; Fields = @('ApiHost'); Url = $true; Secrets = { param($c) 'IronScales' } }
             @{ Name = 'Hudu'; Fields = @('BaseUrl'); Url = $true; Secrets = { param($c) 'Hudu'; if ($c.Hudu.CFEnabled -eq $true -and $c.CFZTNA.Enabled -eq $true) { 'CFZTNA' } } }
             @{ Name = 'PWPush'; Fields = @('BaseUrl'); Url = $true; Secrets = { param($c) if ($c.PWPush.UseBearerAuth -eq $true -or $c.PWPush.EmailAddress) { 'PWPush' }; if ($c.PWPush.CFEnabled -eq $true -and $c.CFZTNA.Enabled -eq $true) { 'CFZTNA' } } }
             @{ Name = 'NinjaOne'; Fields = @('Instance'); Secrets = { param($c) 'NinjaOne' } }
@@ -117,7 +118,7 @@ function Invoke-ExecExtensionsConfig {
         }
 
         # The property name becomes the stored secret's name, so only the extensions the settings form posts may store one.
-        $KnownExtensions = @('Autotask', 'AutotaskPSA', 'CFZTNA', 'cippapi', 'ConnectWisePSA', 'GitHub', 'Gradient', 'HaloPSA', 'HIBP', 'Hudu', 'KaseyaBMS', 'NinjaOne', 'Pax8', 'PWPush', 'Sherweb', 'Syncro')
+        $KnownExtensions = @('Autotask', 'AutotaskPSA', 'CFZTNA', 'cippapi', 'ConnectWisePSA', 'GitHub', 'Gradient', 'HaloPSA', 'HIBP', 'Hudu', 'IronScales', 'KaseyaBMS', 'NinjaOne', 'Pax8', 'PWPush', 'Sherweb', 'Syncro')
         foreach ($APIKey in $Body.PSObject.Properties.Name) {
             Write-Information "Working on $APIKey"
             if ($APIKey -notin $KnownExtensions) {

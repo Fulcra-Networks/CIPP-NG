@@ -5,7 +5,7 @@ Function Invoke-ExecExtensionTest {
     .ROLE
         CIPP.Extension.Read
     .DESCRIPTION
-        Tests the stored credentials for a configured third-party integration and reports whether CIPP can connect. extensionName selects which one: HaloPSA, Syncro, Autotask, Gradient, NinjaOne, PWPush, Hudu, Sherweb, HIBP or GitHub.
+        Tests the stored credentials for a configured third-party integration and reports whether CIPP can connect. extensionName selects which one: HaloPSA, Syncro, Autotask, IronScales, Gradient, NinjaOne, PWPush, Hudu, Sherweb, HIBP or GitHub.
     #>
     [CmdletBinding()]
     param($Request, $TriggerMetadata)
@@ -51,6 +51,12 @@ Function Invoke-ExecExtensionTest {
                 Get-AutotaskToken -Configuration $Configuration.Autotask -Force
                 $Base = Get-AutotaskAPIResource -Resource Companies -ID 0 -ErrorAction Stop
                 $Results = [pscustomobject]@{'Results' = "Successfully Connected to Autotask ($($Base.companyName))" }
+            }
+            'IronScales' {
+                # Get-IronScalesToken throws on a bad key or host; listing companies proves the token's scope.
+                $IronScalesToken = Get-IronScalesToken -Configuration $Configuration.IronScales
+                $IronScalesCompanies = Get-IronScalesCompany -Configuration $Configuration.IronScales -Token $IronScalesToken
+                $Results = [pscustomobject]@{'Results' = "Successfully Connected to IronScales ($($IronScalesCompanies.Count) companies)" }
             }
             'Gradient' {
                 $GradientToken = Get-GradientToken -Configuration $Configuration.Gradient
