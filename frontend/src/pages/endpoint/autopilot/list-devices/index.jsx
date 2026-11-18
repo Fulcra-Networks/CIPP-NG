@@ -5,6 +5,7 @@ import { CippApiDialog } from '../../../../components/CippComponents/CippApiDial
 import { Button } from '@mui/material'
 import { useDialog } from '../../../../hooks/use-dialog'
 import Link from 'next/link'
+import { buildGroupTagOptions, validateGroupTagOption } from '../../../../utils/autopilot-group-tags'
 
 const Page = () => {
   const pageTitle = 'Autopilot Devices'
@@ -110,18 +111,25 @@ const Page = () => {
         deviceId: 'id',
         serialNumber: 'serialNumber',
       },
-      confirmText: 'Enter the new group tag for the device.',
+      confirmText: 'Select the group tag for [serialNumber].',
+      // Fulcra custom (plan 09): pick from the tenant's AutopilotGroupTags list, not free text.
+      setDefaultValues: true,
       fields: [
         {
-          type: 'textField',
+          type: 'autoComplete',
           name: 'groupTag',
           label: 'Group Tag',
-          validate: (value) => {
-            if (value && value.length > 128) {
-              return 'Group tag cannot exceed 128 characters.'
-            }
-            return true // Validation passed
+          multiple: false,
+          creatable: false,
+          api: {
+            url: '/api/ListCustomVariables',
+            queryKey: 'ListCustomVariables-AutopilotGroupTags',
+            dataKey: 'Results',
+            labelField: 'Name',
+            valueField: 'Name',
+            dataFilter: buildGroupTagOptions,
           },
+          validate: validateGroupTagOption,
         },
       ],
       color: 'secondary',

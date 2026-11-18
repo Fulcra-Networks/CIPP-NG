@@ -15,7 +15,8 @@ Function Invoke-ExecSetAPDeviceGroupTag {
     try {
         $DeviceId = $Request.Body.deviceId
         $SerialNumber = $Request.Body.serialNumber
-        $GroupTag = $Request.Body.groupTag
+        # The list page sends the dropdown option ({label, value}); other callers send a string.
+        $GroupTag = $Request.Body.groupTag.value ?? $Request.Body.groupTag
 
         # Validation - GroupTag can be empty, but if provided, validate it
         if ($null -ne $GroupTag -and $GroupTag -ne '' -and $GroupTag.Length -gt 128) {
