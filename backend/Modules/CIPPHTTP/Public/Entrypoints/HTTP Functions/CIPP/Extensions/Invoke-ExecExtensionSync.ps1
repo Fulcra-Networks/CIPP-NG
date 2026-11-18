@@ -34,6 +34,26 @@ Function Invoke-ExecExtensionSync {
             }
         }
 
+        'IronScales' {
+            # Fulcra custom extension (migration plan 02). The fork pushed to a queue whose consumer
+            # was deleted in 2025, so its force sync did nothing.
+            try {
+                $Table = Get-CIPPTable -TableName Extensionsconfig
+                $Configuration = (Get-CIPPAzDataTableEntity @Table -Filter "PartitionKey eq 'CippExtensions' and RowKey eq 'Config'").config | ConvertFrom-Json -Depth 10
+                if ($Configuration.IronScales.Enabled -eq $true) {
+                    $null = Add-CippQueueMessage -Cmdlet 'Invoke-IronScalesTicketSync' -Parameters @{}
+                    Write-LogMessage -API 'IronScales' -tenant 'none' -message 'On-demand IronScales sync queued.' -Sev 'Info' -Headers $Request.Headers
+                    $Results = [pscustomobject]@{'Results' = 'IronScales sync queued. Tickets for unclassified incidents will be created shortly.' }
+                } else {
+                    $Results = [pscustomobject]@{'Results' = 'IronScales is not enabled.' }
+                }
+            } catch {
+                $StatusCode = [HttpStatusCode]::InternalServerError
+                $Results = [pscustomobject]@{'Results' = "Could not start IronScales sync: $($_.Exception.Message)" }
+                Write-LogMessage -API 'IronScales' -tenant 'none' -message "Could not start IronScales sync: $($_.Exception.Message)" -sev Error
+            }
+        }
+
         'NinjaOne' {
             try {
                 $Table = Get-CIPPTable -TableName NinjaOneSettings

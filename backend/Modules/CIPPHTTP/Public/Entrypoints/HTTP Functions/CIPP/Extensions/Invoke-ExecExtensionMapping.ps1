@@ -40,6 +40,9 @@ Function Invoke-ExecExtensionMapping {
       'Autotask' {
         $Result = Get-AutotaskMapping -CIPPMapping $Table
       }
+      'IronScales' {
+        $Result = Get-IronScalesMapping -CIPPMapping $Table
+      }
       'HaloPSAFields' {
         # Outcomes and priorities are scoped to a ticket type. The settings page sends the
         # ticket type currently selected in the form so the lists follow the dropdown; without
@@ -104,6 +107,9 @@ Function Invoke-ExecExtensionMapping {
         }
         'Autotask' {
           $Result = Set-AutotaskMapping -CIPPMapping $Table -APIName $APIName -Request $Request
+        }
+        'IronScales' {
+          $Result = Set-IronScalesMapping -CIPPMapping $Table -APIName $APIName -Request $Request
         }
         'NinjaOne' {
           $Result = Set-NinjaOneOrgMapping -CIPPMapping $Table -APIName $APIName -Request $Request

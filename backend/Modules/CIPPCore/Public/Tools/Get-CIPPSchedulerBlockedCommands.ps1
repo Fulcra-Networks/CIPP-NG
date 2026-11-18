@@ -50,6 +50,7 @@ function Get-CIPPSchedulerBlockedCommands {
         'Get-HaloToken'
         'Invoke-SyncroRequest'
         'Get-AutotaskToken'
+        'Get-IronScalesToken'
         'Get-NinjaOneToken'
         'Get-SherwebAuthentication'
         'Get-HIBPAuth'

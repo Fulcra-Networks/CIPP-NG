@@ -181,6 +181,15 @@
     "RunOnProcessor": true
   },
   {
+    "Id": "32e74daf-351a-4ddc-8c2e-128f0c4c423f",
+    "Command": "Start-IronScalesTimer",
+    "Description": "Fulcra: raise Autotask tickets for unclassified IronScales incidents",
+    "Cron": "0 */30 * * * 1-5",
+    "JitterMinutes": 2,
+    "Priority": 12,
+    "RunOnProcessor": true
+  },
+  {
     "Id": "3fb9745b-08c9-411b-bfac-dc48087489d5",
     "Command": "Start-CIPPStatsTimer",
     "Description": "Timer to process CIPP stats",
