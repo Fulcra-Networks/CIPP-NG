@@ -50,6 +50,15 @@ describe('buildGroupTagOptions', () => {
   })
 })
 
+describe('CLEAR_GROUP_TAG_OPTION', () => {
+  // CippAutocomplete turns an option with value '' into "nothing selected", so the clear option
+  // must carry a non-empty value that the endpoint trims to ''.
+  it('has a value the autocomplete keeps, which trims to an empty tag', () => {
+    expect(CLEAR_GROUP_TAG_OPTION.value).not.toBe('')
+    expect(CLEAR_GROUP_TAG_OPTION.value.trim()).toBe('')
+  })
+})
+
 describe('validateGroupTagOption', () => {
   it('accepts a listed tag, the current tag and the clear option', () => {
     expect(validateGroupTagOption({ label: 'BLY', value: 'BLY' })).toBe(true)

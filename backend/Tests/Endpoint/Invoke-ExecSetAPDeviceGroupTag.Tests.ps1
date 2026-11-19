@@ -52,6 +52,16 @@ Describe 'Invoke-ExecSetAPDeviceGroupTag' {
         $script:Sent.groupTag | Should -Be ''
     }
 
+    It 'clears the tag with the list page''s (clear tag) option, which sends a single space' {
+        (Invoke-SetTag -GroupTag @{ label = '(clear tag)'; value = ' ' }).StatusCode | Should -Be 200
+        $script:Sent.groupTag | Should -Be ''
+    }
+
+    It 'trims surrounding spaces from a tag' {
+        Invoke-SetTag -GroupTag '  ManagedPC ' | Out-Null
+        $script:Sent.groupTag | Should -Be 'ManagedPC'
+    }
+
     It 'rejects a tag over 128 characters without calling Graph' {
         (Invoke-SetTag -GroupTag @{ label = 'x'; value = ('x' * 129) }).StatusCode | Should -Be 400
         Should -Invoke New-GraphPOSTRequest -Times 0
