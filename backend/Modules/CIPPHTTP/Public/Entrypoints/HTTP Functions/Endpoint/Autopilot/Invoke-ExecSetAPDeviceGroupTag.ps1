@@ -17,6 +17,8 @@ Function Invoke-ExecSetAPDeviceGroupTag {
         $SerialNumber = $Request.Body.serialNumber
         # The list page sends the dropdown option ({label, value}); other callers send a string.
         $GroupTag = $Request.Body.groupTag.value ?? $Request.Body.groupTag
+        # Surrounding spaces are never meant. The list page's "(clear tag)" option sends ' ', which trims to ''.
+        if ($GroupTag -is [string]) { $GroupTag = $GroupTag.Trim() }
 
         # Validation - GroupTag can be empty, but if provided, validate it
         if ($null -ne $GroupTag -and $GroupTag -ne '' -and $GroupTag.Length -gt 128) {

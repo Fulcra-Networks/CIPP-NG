@@ -6,8 +6,10 @@
 
 export const AUTOPILOT_GROUP_TAG_VARIABLE = 'AutopilotGroupTags'
 
-// Picking this sends an empty tag, which clears it (the endpoint allows an empty tag).
-export const CLEAR_GROUP_TAG_OPTION = { label: '(clear tag)', value: '' }
+// Picking this clears the tag. The value is a single space, not '': CippAutocomplete treats an
+// option whose value is '' as "nothing selected" and drops it, so the form saw an empty field.
+// The endpoint trims the tag, so ' ' arrives as an empty tag.
+export const CLEAR_GROUP_TAG_OPTION = { label: '(clear tag)', value: ' ' }
 
 // Shown when the tenant has no list. Its value is rejected by validateGroupTagOption.
 export const MISSING_GROUP_TAG_VALUE = '__no_group_tag_list__'
