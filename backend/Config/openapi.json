@@ -39755,10 +39755,12 @@
                     "type": "string"
                   },
                   "groupTag": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/LabelValue"
+                      }
+                    ],
+                    "description": "The list page sends the dropdown option ({label, value}); other callers send a string."
                   },
                   "serialNumber": {
                     "type": "string"
